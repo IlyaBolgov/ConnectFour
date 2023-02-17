@@ -1,57 +1,30 @@
 package connectfour
 
 fun main() {
-    val defaultMessage = """Set the board dimensions (Rows x Columns)
-Press Enter for default (6 x 7)"""
-    val invalidInput = "Invalid input"
     println("Connect Four")
     println("First player's name:")
-    val firstPlayer = readln()
+    val first = readln()
     println("Second player's name:")
-    val secondPlayer = readln()
-    println(defaultMessage)
-    val rowsColumns = readln().uppercase().replace("\\s".toRegex(), "")
-    val answer = if (rowsColumns.isEmpty()) mutableListOf<Int>(6, 7) else processing(rowsColumns)
-    var invalidAnswer = answer
-    while (invalidAnswer.isEmpty()) {
-        println(invalidInput)
-        println(defaultMessage)
-        val anotherRowsColumns = readln().uppercase().replace("\\s".toRegex(), "")
-        invalidAnswer = if (anotherRowsColumns.isEmpty()) mutableListOf<Int>(6, 7) else processing(anotherRowsColumns)
-    }
-
-    while (invalidAnswer[0] !in 5..9) {
-        println("Board rows should be from 5 to 9")
-        println(defaultMessage)
-        val anotherRowsColumns = readln().uppercase().filterNot { it.isWhitespace() }
-        invalidAnswer = if (anotherRowsColumns.isEmpty()) mutableListOf<Int>(6, 7) else processing(anotherRowsColumns)
-    }
-
-    while (invalidAnswer[1] !in 5..9) {
-        println("Board columns should be from 5 to 9")
-        println(defaultMessage)
-        val anotherRowsColumns = readln().uppercase().filterNot { it.isWhitespace() }
-        invalidAnswer = if (anotherRowsColumns.isEmpty()) mutableListOf<Int>(6, 7) else processing(anotherRowsColumns)
-    }
-
-    if (invalidAnswer[0] in 5..9) {
-        if (invalidAnswer[1] in 5..9) {
-            println("$firstPlayer VS $secondPlayer")
-            println("${invalidAnswer[0]} X ${invalidAnswer[1]} board")
+    val second = readln()
+    val regex = Regex("""^\d+[xX]{1}\d+$""")
+    while (true) {
+        println("Set the board dimensions (Rows x Columns)")
+        println("Press Enter for default (6 x 7)")
+        var input = readln().filter { !it.isWhitespace() }
+        if (input == "") input = "6X7"
+        val a = Character.getNumericValue(input.first())
+        val b = Character.getNumericValue(input.last())
+        if (!input.matches(regex)) {
+            println("Invalid input")
+        }  else if (a < 5 || a > 9) {
+            println("Board rows should be from 5 to 9")
+        } else if (b < 5 || b > 9) {
+            println("Board columns should be from 5 to 9")
+        } else {
+            println("$first VS $second")
+            println("$a X $b board")
+            break
         }
     }
-}
 
-fun processing (rowsColumns: String): MutableList<Int> {
-    val numbers = mutableListOf<Int>()
-    if (rowsColumns.matches(Regex("""^\s*\d+\s*[xX]\s*\d+\s*${'$'}"""))) {
-        val value = rowsColumns.split("X")
-        val a = value[0].toInt()
-        val b = value[1].toInt()
-        numbers.add(a)
-        numbers.add(b)
-    } else {
-        return numbers
-    }
-    return numbers
 }
