@@ -1,5 +1,3 @@
-package connectfour
-
 fun main() {
     val defaultMessage = """Set the board dimensions (Rows x Columns)
 Press Enter for default (6 x 7)"""
